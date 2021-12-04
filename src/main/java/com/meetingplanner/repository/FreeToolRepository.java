@@ -17,8 +17,8 @@ public interface FreeToolRepository extends JpaRepository<FreeTool, Long> {
 
     @Query(value ="select ft.* \n" +
             "from free_tool ft,\n" +
-            "public.meeting_free_tool mft,\n" +
-            "public.meeting mt\n" +
+            "meeting_free_tool mft,\n" +
+            "meeting mt\n" +
             "WHERE\n" +
             "ft.outil_libre_id = mft.outil_libre_id\n" +
             "AND mt.reunion_id = mft.reunion_id\n" +

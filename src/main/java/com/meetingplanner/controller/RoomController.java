@@ -7,10 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.meetingplanner.dto.RoomDto;
 import com.meetingplanner.mapper.RoomMapper;
@@ -33,6 +30,19 @@ public class RoomController {
             Set<RoomDto> roomDtos = new HashSet<>();
             _rooms_.forEach(x -> roomDtos.add(RoomMapper.RoomEntityDtoMapper(x)));
             return new ResponseEntity<>(roomDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value="/Salles", params = "numberOfPersons")
+    public ResponseEntity<Set<RoomDto>>listeSallesWithEnoughCapacity(@RequestParam int numberOfPersons) {
+        try {
+            List<Room> _roomsWithEnoughCapacity = roomService.getRoomsWithEnoughCapacity(numberOfPersons);
+            Set<Room> _roomsWithEnoughCapacity_ = new HashSet<>(_roomsWithEnoughCapacity);
+            Set<RoomDto> roomsWithEnoughCapacityDtos = new HashSet<>();
+            _roomsWithEnoughCapacity_.forEach(x -> roomsWithEnoughCapacityDtos.add(RoomMapper.RoomEntityDtoMapper(x)));
+            return new ResponseEntity<>(roomsWithEnoughCapacityDtos, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

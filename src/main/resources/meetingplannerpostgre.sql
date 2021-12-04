@@ -21,18 +21,18 @@ INSERT INTO public.free_tool(outil_libre_id, type) VALUES (14, 'Tableau');
 INSERT INTO public.free_tool(outil_libre_id, type) VALUES (15, 'Tableau');
 
 /*Salles*/
-INSERT INTO public.room(salle_id, capacity) VALUES('E1001', 23);
-INSERT INTO public.room(salle_id, capacity) VALUES('E1002', 10);
-INSERT INTO public.room(salle_id, capacity) VALUES('E1003', 8);
-INSERT INTO public.room(salle_id, capacity) VALUES('E1004', 4);
-INSERT INTO public.room(salle_id, capacity) VALUES('E2001', 4);
-INSERT INTO public.room(salle_id, capacity) VALUES('E2002', 15);
-INSERT INTO public.room(salle_id, capacity) VALUES('E2003', 7);
-INSERT INTO public.room(salle_id, capacity) VALUES('E2004', 9);
-INSERT INTO public.room(salle_id, capacity) VALUES('E3001', 13);
-INSERT INTO public.room(salle_id, capacity) VALUES('E3002', 8);
-INSERT INTO public.room(salle_id, capacity) VALUES('E3003', 9);
-INSERT INTO public.room(salle_id, capacity) VALUES('E3004', 4);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E1001', 23, 16);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E1002', 10, 7);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E1003', 8, 5);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E1004', 4, 2);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E2001', 4, 2);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E2002', 15, 10);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E2003', 7, 4);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E2004', 9, 6);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E3001', 13, 9);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E3002', 8, 5);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E3003', 9, 6);
+INSERT INTO public.room(salle_id, capacity, capacity70) VALUES('E3004', 4, 2);
 
 /*Outils Salle*/
 INSERT INTO public.room_tool(outil_salle_id, type, salle_id) VALUES(1, 'Ecran', 'E1002');

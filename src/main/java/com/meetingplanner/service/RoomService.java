@@ -18,4 +18,9 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    public List<Room> getRoomsWithEnoughCapacity(int meetingNumberOfPersons) {
+        List<Room > rooms = this.roomRepository.findRoomsWithEnoughCapacity(6);
+        return roomRepository.findRoomsWithEnoughCapacity(meetingNumberOfPersons);
+    }
+
 }
