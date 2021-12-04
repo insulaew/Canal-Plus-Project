@@ -22,7 +22,7 @@ public class FreeTool {
     private long freeToolId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, updatable = false)
     private ToolType type;
 
     @ManyToMany(mappedBy = "freeTools")

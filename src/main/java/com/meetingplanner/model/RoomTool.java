@@ -21,11 +21,11 @@ public class RoomTool {
     private long roomToolId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, updatable = false)
     private ToolType type;
 
     @ManyToOne
-    @JoinColumn(name="salle_id", nullable=false)
+    @JoinColumn(name="salle_id", nullable=false, updatable = false)
     private Room room;
 
     public RoomTool(long roomToolId, ToolType type, Room room) {

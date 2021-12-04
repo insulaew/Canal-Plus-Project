@@ -14,8 +14,7 @@ public class RoomMapper {
     public static RoomDto RoomEntityDtoMapper (Room room) {
         RoomDto roomDto = new RoomDto(
                 room.getId(),
-                room.getCapacity(),
-                room.getCapacity70()
+                room.getCapacity()
         );
 
         Set<Long> meetingsIds = new HashSet<>();

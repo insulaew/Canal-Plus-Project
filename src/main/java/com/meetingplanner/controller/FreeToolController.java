@@ -1,9 +1,12 @@
 package com.meetingplanner.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.meetingplanner.model.Meeting;
+import com.meetingplanner.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,8 @@ import com.meetingplanner.mapper.FreeToolMapper;
 import com.meetingplanner.model.FreeTool;
 import com.meetingplanner.service.FreeToolService;
 
+import javax.validation.Valid;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
@@ -21,6 +26,9 @@ public class FreeToolController {
 
     @Autowired
     private FreeToolService freeToolService;
+
+    @Autowired
+    private MeetingService meetingService;
 
     @GetMapping(value="/EquipementsLibres")
     public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibres() {
@@ -56,6 +64,22 @@ public class FreeToolController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping(value = "/Equipement")
+    public ResponseEntity<FreeToolDto> postOutilLibre(@Valid @RequestBody FreeToolDto freeToolDto) {
+        FreeTool freeTool = freeToolDto.toFreeTool();
+        Set<Long> meetingsIds =  freeToolDto.getMeetingsIds();
+        List<Long> _meetingsIds = new ArrayList<>(meetingsIds);
+        try {
+            List<Meeting> meetings = this.meetingService.getMeetingsByIds(_meetingsIds);
+            Set<Meeting> _meetings = new HashSet<>(meetings);
+            freeTool.setMeetings(_meetings);
+            return new ResponseEntity<>(FreeToolMapper.FreeToolEntityDtoMapper((this.freeToolService.saveFreeTool(freeTool))), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

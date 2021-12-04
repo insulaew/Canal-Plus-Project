@@ -23,7 +23,7 @@ public class Meeting {
     private long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Type", nullable = false)
+    @Column(name = "Type", nullable = false, updatable = false)
     private MeetingType type;
 
     @ManyToOne
@@ -42,13 +42,13 @@ public class Meeting {
     )
     Set<FreeTool> freeTools;
 
-    @Column(name = "start_hour", nullable = false)
+    @Column(name = "start_hour", nullable = false, updatable = false)
     private int startHour;
 
-    @Column(name = "end_hour", nullable = false)
+    @Column(name = "end_hour", nullable = false, updatable = false)
     private int endHour;
 
-    @Column(name = "number_of_persons", nullable = false)
+    @Column(name = "number_of_persons", nullable = false, updatable = false)
     private int numberOfPersons;
 
     @Column(name = "is_reserved", nullable = false)

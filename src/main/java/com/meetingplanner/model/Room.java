@@ -16,11 +16,11 @@ public class Room {
     @Column(name = "salle_id", nullable = false)
     private String id;
 
-    @Column(name = "capacity", nullable = false)
+    @Column(name = "capacity", nullable = false, updatable = false)
     private int capacity;
 
     @Column(name = "capacity70")
-    private int capacity70;
+    private Integer capacity70;
 
     @OneToMany(mappedBy = "room")
     private Set<RoomTool> roomTools;
@@ -28,10 +28,10 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Meeting> meetings;
 
-    public Room(String id, int capacity, int capacity70, Set<RoomTool> roomTools) {
+    public Room(String id, int capacity, Set<RoomTool> roomTools) {
         this.id = id;
         this.capacity = capacity;
-        this.capacity70 = (int) (capacity*0.7);
+        this.capacity70 =(Integer) (int) (capacity*0.7);
         this.roomTools = roomTools;
     }
 

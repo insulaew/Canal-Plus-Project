@@ -1,5 +1,6 @@
 package com.meetingplanner.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,13 +12,7 @@ import com.meetingplanner.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.meetingplanner.dto.UserDto;
 import com.meetingplanner.mapper.UserMapper;
@@ -48,15 +43,16 @@ public class UserController {
         }
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @PostMapping(value="/Utilisateur")
     public ResponseEntity<UserDto> postUtilisateur(@Valid @RequestBody UserDto userDto) {
+        Set<Long> meetingsIds = userDto.getMeetingsIds();
+        List<Long> _meetingsIds = new ArrayList<>(meetingsIds);
+        List<Meeting> meetings = this.meetingService.getMeetingsByIds(_meetingsIds);
+        Set<Meeting> _meetings = new HashSet<>(meetings);
+        User userSaved = userDto.toUser();
+        userSaved.setMeetings(_meetings);
         try {
-            List<Meeting> meetingsIds = this.meetingService.getMeetingsByIds((List<Long>)userDto.getMeetingsIds());
-            Set<Meeting> _meetingsIds = new HashSet<>(meetingsIds);
-            User userSaved = userDto.toUser();
-            userSaved.setMeetings(_meetingsIds);
-            UserDto userDtoFinal = UserMapper.UserEntityDtoMapper(userSaved);
+            UserDto userDtoFinal = UserMapper.UserEntityDtoMapper(this.userService.saveUser(userSaved));
             return new ResponseEntity<>(userDtoFinal, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

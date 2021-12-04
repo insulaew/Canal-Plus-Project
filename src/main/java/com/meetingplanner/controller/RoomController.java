@@ -29,8 +29,8 @@ public class RoomController {
     public ResponseEntity<Set<RoomDto>>listeSalles() {
         try {
             List<Room> _rooms = roomService.getRooms();
-            Set<Room> _rooms_ = new HashSet<Room>(_rooms);
-            Set<RoomDto> roomDtos = new HashSet<RoomDto>();
+            Set<Room> _rooms_ = new HashSet<>(_rooms);
+            Set<RoomDto> roomDtos = new HashSet<>();
             _rooms_.forEach(x -> roomDtos.add(RoomMapper.RoomEntityDtoMapper(x)));
             return new ResponseEntity<>(roomDtos, HttpStatus.OK);
         } catch (Exception e) {

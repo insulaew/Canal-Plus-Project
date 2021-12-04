@@ -27,4 +27,8 @@ public class RoomToolService {
         return roomToolRepository.findAllById(ids);
     }
 
+    public List<RoomTool> getRoomToolsByType(String type) {
+        return roomToolRepository.findRoomToolsByType(type);
+    }
+
 }

@@ -14,7 +14,7 @@ public class RoomDto {
 
     private Set<Long> meetingsIds;
 
-    public RoomDto(String id, int capacity, int capacity70) {
+    public RoomDto(String id, int capacity) {
         this.id = id;
         this.capacity = capacity;
         this.capacity70 = (int) (capacity*0.7);

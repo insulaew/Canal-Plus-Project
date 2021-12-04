@@ -1,5 +1,8 @@
 package com.meetingplanner.dto;
 
+import com.meetingplanner.model.FreeTool;
+import com.meetingplanner.model.ToolType;
+
 import java.util.Set;
 
 public class FreeToolDto {
@@ -39,6 +42,13 @@ public class FreeToolDto {
 
     public void setMeetingsIds(Set<Long> meetingsIds) {
         this.meetingsIds = meetingsIds;
+    }
+
+    public FreeTool toFreeTool() {
+        return new FreeTool(
+               this.freeToolId,
+                ToolType.valueOf(this.type)
+        );
     }
 
 }
