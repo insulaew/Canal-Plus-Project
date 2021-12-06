@@ -53,6 +53,20 @@ public class FreeToolController {
         }
     }
 
+    @GetMapping(value="/EquipementsLibresByType")
+    public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibresByTypeCompatibleForMeeting(@RequestParam String type, int meetingStartHour) {
+        try {
+            List<FreeTool> _freeToolsByType = freeToolService.getFreeToolsByType(type, meetingStartHour);
+            _freeToolsByType.stream().filter(x -> !x.getMeetings().isEmpty());
+            Set<FreeTool> _freeToolsByType_ = new HashSet<>(_freeToolsByType);
+            Set<FreeToolDto> freeToolsByTypeDtos = new HashSet<>();
+            _freeToolsByType_.forEach(x -> freeToolsByTypeDtos.add(FreeToolMapper.FreeToolEntityDtoMapper(x)));
+            return new ResponseEntity<>(freeToolsByTypeDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(value="/EquipementsLibres", params="ids")
     public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibresByIds(@RequestParam List<Long> ids) {
         try {

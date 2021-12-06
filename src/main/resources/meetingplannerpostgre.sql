@@ -48,7 +48,7 @@ INSERT INTO public.room_tool(outil_salle_id, type, salle_id) VALUES(10, 'Ecran',
 INSERT INTO public.room_tool(outil_salle_id, type, salle_id) VALUES(11, 'Pieuvre', 'E3003');
 
 /*Réunions*/
-INSERT INTO public.meeting(reunion_id, type, start_hour, end_hour, number_of_persons, is_reserved, salle_id, utilisateur_id) VALUES(1, 'VC', 9, 10, 8, FALSE, 'E2002', 1);
+INSERT INTO public.meeting(reunion_id, type, start_hour, end_hour, number_of_persons, is_reserved, salle_id, utilisateur_id) VALUES(1, 'VC', 9, 10, 8, TRUE, 'E2002', 1);
 INSERT INTO public.meeting(reunion_id, type, start_hour, end_hour, number_of_persons, is_reserved) VALUES(2, 'VC', 9, 10, 6, FALSE);
 INSERT INTO public.meeting(reunion_id, type, start_hour, end_hour, number_of_persons, is_reserved) VALUES(3, 'RC', 11, 12, 4, FALSE);
 INSERT INTO public.meeting(reunion_id, type, start_hour, end_hour, number_of_persons, is_reserved) VALUES(4, 'RS', 11, 12, 2, FALSE);

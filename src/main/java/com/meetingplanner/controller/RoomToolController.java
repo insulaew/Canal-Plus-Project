@@ -49,8 +49,8 @@ public class RoomToolController {
     public ResponseEntity<Set<RoomToolDto>>listeEquipementsSalleByIds(@RequestParam List<Long> ids) {
         try {
             List<RoomTool> _roomToolsByIds = roomToolService.getRoomToolsByIds(ids);
-            Set<RoomTool> _roomToolsByIds_ = new HashSet<RoomTool>(_roomToolsByIds);
-            Set<RoomToolDto> roomToolsByIdsDtos = new HashSet<RoomToolDto>();
+            Set<RoomTool> _roomToolsByIds_ = new HashSet<>(_roomToolsByIds);
+            Set<RoomToolDto> roomToolsByIdsDtos = new HashSet<>();
             _roomToolsByIds_.forEach(x -> roomToolsByIdsDtos.add(RoomToolMapper.RoomToolEntityDtoMapper(x)));
             return new ResponseEntity<>(roomToolsByIdsDtos, HttpStatus.OK);
         } catch (Exception e) {

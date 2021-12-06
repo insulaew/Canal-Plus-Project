@@ -32,6 +32,11 @@ public class FreeToolRepositoryTest {
     }
 
     @Test
+    public void testGetFreeToolsByTypeCompatibleForMeeting() {
+        assertEquals(this.freeToolRepository.findFreeToolsByTypeCompatibleForMeeting("Pieuvre", 9).size(), 3);
+    }
+
+    @Test
     public void testGetFreeToolsByType() {
         assertEquals(this.freeToolRepository.findFreeToolsByType("Webcam").size(), 4);
     }

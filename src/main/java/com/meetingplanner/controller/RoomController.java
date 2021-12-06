@@ -35,10 +35,10 @@ public class RoomController {
         }
     }
 
-    @GetMapping(value="/Salles", params = "numberOfPersons")
-    public ResponseEntity<Set<RoomDto>>listeSallesWithEnoughCapacity(@RequestParam int numberOfPersons) {
+    @GetMapping(value="/SallesCompatiblesPourMeeting")
+    public ResponseEntity<Set<RoomDto>>listeSallesCompatiblesForMeeting(@RequestParam int numberOfPersons, int meetingStartHour) {
         try {
-            List<Room> _roomsWithEnoughCapacity = roomService.getRoomsWithEnoughCapacity(numberOfPersons);
+            List<Room> _roomsWithEnoughCapacity = roomService.getRoomsCompatibleForMeeting(numberOfPersons, meetingStartHour);
             Set<Room> _roomsWithEnoughCapacity_ = new HashSet<>(_roomsWithEnoughCapacity);
             Set<RoomDto> roomsWithEnoughCapacityDtos = new HashSet<>();
             _roomsWithEnoughCapacity_.forEach(x -> roomsWithEnoughCapacityDtos.add(RoomMapper.RoomEntityDtoMapper(x)));

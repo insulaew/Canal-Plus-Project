@@ -23,6 +23,8 @@ public class FreeToolService {
         return freeToolRepository.findById(id);
     }
 
+    public List<FreeTool> getFreeToolsByType(String type, int meetingStartHour) { return freeToolRepository.findFreeToolsByType(type); }
+
     public List<FreeTool> getFreeToolsByIds(List<Long> ids) {
         return freeToolRepository.findAllById(ids);
     }
