@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.meetingplanner.model.Room;
 import com.meetingplanner.repository.RoomRepository;
 
+/*Classe du service de l'entité Room*/
 @Service
 public class RoomService {
 
@@ -20,6 +21,10 @@ public class RoomService {
 
     public List<Room> getRoomsCompatibleForMeeting(int meetingNumberOfPersons, int meetingStartHour) {
         return roomRepository.findRoomsCompatibleForMeeting(meetingNumberOfPersons, meetingStartHour);
+    }
+
+    public List<Room> getRoomsCompatibleForMeetingEmergency(int meetingNumberOfPersons, int meetingStartHour) {
+        return roomRepository.findRoomsCompatibleForMeetingEmergency(meetingNumberOfPersons, meetingStartHour);
     }
 
 }

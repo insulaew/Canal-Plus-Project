@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/*Classe de l'entité Meeting*/
 @Entity
 @Table(name = "MEETING")
 public class Meeting {
@@ -64,7 +65,6 @@ public class Meeting {
     }
 
     public Meeting() {
-
     }
 
     public long getId() {

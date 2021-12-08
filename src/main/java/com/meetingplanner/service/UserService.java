@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.meetingplanner.model.User;
 import com.meetingplanner.repository.UserRepository;
 
+/*Classe du service de l'entité User*/
 @Service
 public class UserService {
 

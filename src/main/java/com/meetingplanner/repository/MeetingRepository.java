@@ -8,13 +8,18 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/*Classe du repository de l'entité Meeting*/
 @Repository
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
-    @Query("SELECT m FROM Meeting m WHERE m.isReserved = false")
+    /*Requête SQL native personnalisée permettant de récupérer les réunions non réservées
+    * en base de données*/
+    @Query(value = "SELECT m.* FROM meeting m WHERE m.is_reserved = false", nativeQuery = true)
     List<Meeting> findNotReservedMeetings();
 
-    @Query("SELECT m FROM Meeting m WHERE m.isReserved = true")
+    /*Requête SQL native personnalisée permettant de récupérer les réunions réservées
+     * en base de données*/
+    @Query(value = "SELECT m.* FROM meeting m WHERE m.is_reserved = true", nativeQuery = true)
     List<Meeting> findReservedMeetings();
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.meetingplanner.model.RoomTool;
 import com.meetingplanner.repository.RoomToolRepository;
 
+/*Classe du service de l'entité RoomTool*/
 @Service
 public class RoomToolService {
 

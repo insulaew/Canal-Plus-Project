@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/*Classe du repository de l'entité RoomTool*/
 @Repository
 public interface RoomToolRepository extends JpaRepository<RoomTool, Long> {
 

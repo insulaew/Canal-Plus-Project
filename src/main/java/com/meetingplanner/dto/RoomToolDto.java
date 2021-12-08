@@ -1,5 +1,9 @@
 package com.meetingplanner.dto;
 
+import com.meetingplanner.model.RoomTool;
+import com.meetingplanner.model.ToolType;
+
+/*Classe du DTO de l'entité RoomTool*/
 public class RoomToolDto {
 
     private long roomToolId;
@@ -39,6 +43,14 @@ public class RoomToolDto {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    /*Permet de convertir un DTO RoomTool en entité RoomTool*/
+    public RoomTool toRoomTool() {
+        return new RoomTool(
+                this.roomToolId,
+                ToolType.valueOf(this.type)
+        );
     }
 
 }

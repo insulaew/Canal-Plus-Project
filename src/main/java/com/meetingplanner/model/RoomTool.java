@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/*Classe de l'entité RoomTool*/
 @Entity
 @Table(name = "ROOM_TOOL")
 public class RoomTool {
@@ -28,10 +29,9 @@ public class RoomTool {
     @JoinColumn(name="salle_id", nullable=false, updatable = false)
     private Room room;
 
-    public RoomTool(long roomToolId, ToolType type, Room room) {
+    public RoomTool(long roomToolId, ToolType type) {
         this.roomToolId = roomToolId;
         this.type = type;
-        this.room = room;
     }
 
     public RoomTool() {

@@ -9,8 +9,10 @@ import com.meetingplanner.model.Meeting;
 import com.meetingplanner.model.Room;
 import com.meetingplanner.model.RoomTool;
 
+/*Classe de traitement Entité/DTO Room*/
 public class RoomMapper {
 
+    /*Permet de convertir une entité Room en DTO Room*/
     public static RoomDto RoomEntityDtoMapper (Room room) {
         RoomDto roomDto = new RoomDto(
                 room.getId(),
@@ -19,18 +21,27 @@ public class RoomMapper {
 
         Set<Long> meetingsIds = new HashSet<>();
         Set<Meeting> meetings = room.getMeetings();
+
         if (meetings != null) {
+
             meetings.forEach(x -> meetingsIds.add(x.getId()));
-            roomDto.setMeetingsIds(meetingsIds);
+
         }
+
+        roomDto.setMeetingsIds(meetingsIds);
 
         Set<RoomToolDto> roomToolDtos = new HashSet<>();
         Set<RoomTool> roomTools = room.getRoomTools();
+
         if (roomTools != null) {
+
             roomTools.forEach(x -> roomToolDtos.add(RoomToolMapper.RoomToolEntityDtoMapper(x)));
-            roomDto.setRoomToolDtos(roomToolDtos);
+
         }
+
+        roomDto.setRoomToolDtos(roomToolDtos);
 
         return roomDto;
     }
+
 }

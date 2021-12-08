@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/*Classe du DTO de l'entité User*/
 public class UserDto {
 
     private long id;
@@ -89,6 +90,7 @@ public class UserDto {
         this.meetingsIds = meetingsIds;
     }
 
+    /*Permet de convertir un DTO User en entité User*/
     public User toUser() {
 
         return new User(

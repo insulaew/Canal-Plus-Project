@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.meetingplanner.model.Meeting;
 import com.meetingplanner.repository.MeetingRepository;
 
+/*Classe du service de l'entité Meeting*/
 @Service
 public class MeetingService {
 
@@ -29,5 +30,7 @@ public class MeetingService {
     public List<Meeting> getReservedMeetings() {
         return meetingRepository.findReservedMeetings();
     }
+
+    public Meeting saveMeeting(Meeting meeting) { return meetingRepository.save(meeting);}
 
 }

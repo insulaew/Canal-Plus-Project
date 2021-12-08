@@ -1,11 +1,9 @@
 package com.meetingplanner.controller;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.meetingplanner.model.Meeting;
 import com.meetingplanner.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +15,7 @@ import com.meetingplanner.mapper.FreeToolMapper;
 import com.meetingplanner.model.FreeTool;
 import com.meetingplanner.service.FreeToolService;
 
-import javax.validation.Valid;
-
+/*Classe du controller de l'entité FreeTool*/
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
@@ -30,6 +27,7 @@ public class FreeToolController {
     @Autowired
     private MeetingService meetingService;
 
+    /*Permet de récupérer tous les outils libres en base de données*/
     @GetMapping(value="/EquipementsLibres")
     public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibres() {
         try {
@@ -42,7 +40,7 @@ public class FreeToolController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    /*Permet de récupérer un outil libre par son id en base de données*/
     @GetMapping(value="/EquipementLibre/")
     public ResponseEntity<FreeToolDto>equipementById(@RequestParam Long id) {
         try {
@@ -52,48 +50,19 @@ public class FreeToolController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    /*Permet de récupérer tous les outils libres par type disponibles pour une réunion en base de données*/
     @GetMapping(value="/EquipementsLibresByType")
     public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibresByTypeCompatibleForMeeting(@RequestParam String type, int meetingStartHour) {
         try {
-            List<FreeTool> _freeToolsByType = freeToolService.getFreeToolsByType(type, meetingStartHour);
-            _freeToolsByType.stream().filter(x -> !x.getMeetings().isEmpty());
-            Set<FreeTool> _freeToolsByType_ = new HashSet<>(_freeToolsByType);
-            Set<FreeToolDto> freeToolsByTypeDtos = new HashSet<>();
-            _freeToolsByType_.forEach(x -> freeToolsByTypeDtos.add(FreeToolMapper.FreeToolEntityDtoMapper(x)));
-            return new ResponseEntity<>(freeToolsByTypeDtos, HttpStatus.OK);
+            List<FreeTool> _freeToolsByTypeCompatibleForMeeting = freeToolService.getFreeToolsByTypeCompatibleForMeeting(type, meetingStartHour);
+            Set<FreeTool> _freeToolsByTypeCompatibleForMeeting_ = new HashSet<>(_freeToolsByTypeCompatibleForMeeting);
+            Set<FreeToolDto> freeToolsByTypeCompatibleForMeetingDtos = new HashSet<>();
+            _freeToolsByTypeCompatibleForMeeting_.forEach(x -> freeToolsByTypeCompatibleForMeetingDtos.add(FreeToolMapper.FreeToolEntityDtoMapper(x)));
+            System.out.println(freeToolsByTypeCompatibleForMeetingDtos);
+            return new ResponseEntity<>(freeToolsByTypeCompatibleForMeetingDtos, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @GetMapping(value="/EquipementsLibres", params="ids")
-    public ResponseEntity<Set<FreeToolDto>>listeEquipementsLibresByIds(@RequestParam List<Long> ids) {
-        try {
-            List<FreeTool> _freeToolsByIds = freeToolService.getFreeToolsByIds(ids);
-            Set<FreeTool> _freeToolsByIds_ = new HashSet<>(_freeToolsByIds);
-            Set<FreeToolDto> freeToolDtosByIds = new HashSet<>();
-            _freeToolsByIds_.forEach(x -> freeToolDtosByIds.add(FreeToolMapper.FreeToolEntityDtoMapper(x)));
-            return new ResponseEntity<>(freeToolDtosByIds, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping(value = "/Equipement")
-    public ResponseEntity<FreeToolDto> postOutilLibre(@Valid @RequestBody FreeToolDto freeToolDto) {
-        FreeTool freeTool = freeToolDto.toFreeTool();
-        Set<Long> meetingsIds =  freeToolDto.getMeetingsIds();
-        List<Long> _meetingsIds = new ArrayList<>(meetingsIds);
-        try {
-            List<Meeting> meetings = this.meetingService.getMeetingsByIds(_meetingsIds);
-            Set<Meeting> _meetings = new HashSet<>(meetings);
-            freeTool.setMeetings(_meetings);
-            return new ResponseEntity<>(FreeToolMapper.FreeToolEntityDtoMapper((this.freeToolService.saveFreeTool(freeTool))), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
 
 }

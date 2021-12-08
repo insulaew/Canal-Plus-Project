@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.meetingplanner.model.FreeTool;
 import com.meetingplanner.repository.FreeToolRepository;
 
+/*Classe du service de l'entité FreeTool*/
 @Service
 public class FreeToolService {
 
@@ -23,14 +24,6 @@ public class FreeToolService {
         return freeToolRepository.findById(id);
     }
 
-    public List<FreeTool> getFreeToolsByType(String type, int meetingStartHour) { return freeToolRepository.findFreeToolsByType(type); }
-
-    public List<FreeTool> getFreeToolsByIds(List<Long> ids) {
-        return freeToolRepository.findAllById(ids);
-    }
-
-    public FreeTool saveFreeTool(FreeTool freeTool) {
-        return freeToolRepository.save(freeTool);
-    }
+    public List<FreeTool> getFreeToolsByTypeCompatibleForMeeting(String type, int meetingStartHour) { return freeToolRepository.findFreeToolsByTypeCompatibleForMeeting(type, meetingStartHour); }
 
 }

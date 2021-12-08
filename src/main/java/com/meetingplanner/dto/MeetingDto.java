@@ -1,7 +1,11 @@
 package com.meetingplanner.dto;
 
+import com.meetingplanner.model.Meeting;
+import com.meetingplanner.model.MeetingType;
+
 import java.util.Set;
 
+/*Classe du DTO de l'entité Meeting*/
 public class MeetingDto {
 
     private long id;
@@ -82,12 +86,12 @@ public class MeetingDto {
         this.numberOfPersons = numberOfPersons;
     }
 
-    public boolean isReserved() {
+    public boolean getIsReserved() {
         return isReserved;
     }
 
-    public void setReserved(boolean reserved) {
-        isReserved = reserved;
+    public void setIsReserved(boolean isReserved) {
+        this.isReserved = isReserved;
     }
 
     public RoomDto getRoomDto() {
@@ -104,6 +108,17 @@ public class MeetingDto {
 
     public void setFreeToolDtos(Set<FreeToolDto> freeToolDtos) {
         this.freeToolDtos = freeToolDtos;
+    }
+
+    /*Permet de convertir un DTO Meeting en entité Meeting*/
+    public Meeting toMeeting() {
+        return new Meeting(
+                this.id,
+                MeetingType.valueOf(this.type),
+                this.startHour,
+                this.numberOfPersons,
+                this.isReserved
+        );
     }
 
 }

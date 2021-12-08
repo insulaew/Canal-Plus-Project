@@ -1,7 +1,10 @@
 package com.meetingplanner.dto;
 
+import com.meetingplanner.model.Room;
+
 import java.util.Set;
 
+/*Classe du DTO de l'entité Room*/
 public class RoomDto {
 
     private String id;
@@ -61,6 +64,14 @@ public class RoomDto {
 
     public void setMeetingsIds(Set<Long> meetingsIds) {
         this.meetingsIds = meetingsIds;
+    }
+
+    /*Permet de convertir un DTO Room en entité Room*/
+    public Room toRoom() {
+        return new Room(
+                this.id,
+                this.capacity
+        );
     }
 
 }

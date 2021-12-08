@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/*Classe de l'entité Room*/
 @Entity
 @Table(name = "ROOM")
 public class Room {
@@ -28,11 +29,10 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Meeting> meetings;
 
-    public Room(String id, int capacity, Set<RoomTool> roomTools) {
+    public Room(String id, int capacity) {
         this.id = id;
         this.capacity = capacity;
         this.capacity70 =(Integer) (int) (capacity*0.7);
-        this.roomTools = roomTools;
     }
 
     public Room() {

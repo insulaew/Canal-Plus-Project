@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+/*Classe de l'entité FreeTool*/
 @Entity
 @Table(name = "FREE_TOOL")
 public class FreeTool {

@@ -5,6 +5,7 @@ import com.meetingplanner.model.ToolType;
 
 import java.util.Set;
 
+/*Classe du DTO de l'entité FreeTool*/
 public class FreeToolDto {
 
     private long freeToolId;
@@ -44,6 +45,7 @@ public class FreeToolDto {
         this.meetingsIds = meetingsIds;
     }
 
+    /*Permet de convertir un DTO FreeTool en entité FreeTool*/
     public FreeTool toFreeTool() {
         return new FreeTool(
                this.freeToolId,
