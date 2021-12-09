@@ -17,10 +17,10 @@ public class RoomDto {
 
     private Set<Long> meetingsIds;
 
-    public RoomDto(String id, int capacity) {
+    public RoomDto(String id, int capacity, int capacity70) {
         this.id = id;
         this.capacity = capacity;
-        this.capacity70 = (int) (capacity*0.7);
+        this.capacity70 = capacity70;
     }
 
     public RoomDto() {
@@ -70,7 +70,8 @@ public class RoomDto {
     public Room toRoom() {
         return new Room(
                 this.id,
-                this.capacity
+                this.capacity,
+                this.capacity70
         );
     }
 

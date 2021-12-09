@@ -29,10 +29,10 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Meeting> meetings;
 
-    public Room(String id, int capacity) {
+    public Room(String id, int capacity, int capacity70) {
         this.id = id;
         this.capacity = capacity;
-        this.capacity70 =(Integer) (int) (capacity*0.7);
+        this.capacity70 = capacity70;
     }
 
     public Room() {

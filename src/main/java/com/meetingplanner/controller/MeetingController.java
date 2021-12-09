@@ -156,10 +156,7 @@ public class MeetingController {
 
         try {
 
-            if (!MeetingValidator.isValid(meeting)) {
-                throw new Exception("La réunion est fonctionnellement invalide !");
-            }
-
+            MeetingValidator.isValid(meeting);
             this.meetingService.saveMeeting(meeting);
             return new ResponseEntity<>(MeetingMapper.MeetingEntityDtoMapper(meeting), HttpStatus.CREATED);
         } catch (Exception e) {
@@ -172,9 +169,7 @@ public class MeetingController {
         Meeting meeting = meetingDto.toMeeting();
         meeting.setReserved(false);
         try {
-            if (!MeetingValidator.isValid(meeting)) {
-                throw new Exception("La réunion est fonctionnellement invalide !");
-            }
+            MeetingValidator.isValid(meeting);
             return  new ResponseEntity<>(MeetingMapper.MeetingEntityDtoMapper(this.meetingService.saveMeeting(meeting)), HttpStatus.OK);
         } catch (Exception e) {
             return  new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

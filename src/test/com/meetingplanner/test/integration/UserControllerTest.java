@@ -1,6 +1,7 @@
 package com.meetingplanner.test.unit.integration;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meetingplanner.Application;
 import com.meetingplanner.dto.UserDto;
 import com.meetingplanner.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.HashSet;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -48,14 +51,19 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(equalTo(3))));
     }
 
-    /*Teste une requête Http Post User qui ne marche pas...*/
+    /*Teste une requête Http Post User.*/
     @Test
     public void testPostUtilisateur() throws Exception{
         UserDto laetitia = new UserDto(4L, "Laetitia", "Dautrey", "laetitia.dautrey@alten.com", "alten123");
+        laetitia.setMeetingsIds(new HashSet<Long>());
 
-        this.mockMvc.perform(post("/api/Utilisateur", laetitia))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName").value("Laetitia"));
+        ObjectMapper mapper = new ObjectMapper();
+
+        this.mockMvc.perform(post("/api/Utilisateur")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(laetitia)))
+                .andExpect(status().isCreated());
+
     }
 
 }
