@@ -3,7 +3,7 @@
 ## Environnement de travail
 
 ### Matériel
-- McBook Pro 2020 (puce Apple M1)
+- McBook Pro 2020 (puce Apple M1 arm64)
 - macOS Monterey 12.0.1
 
 ### Environnement et outils back-end
