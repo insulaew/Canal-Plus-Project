@@ -34,6 +34,12 @@ public class FreeTool {
         this.type = type;
     }
 
+    public FreeTool(long freeToolId, ToolType type, Set<Meeting> meetings) {
+        this.freeToolId = freeToolId;
+        this.type = type;
+        this.meetings = meetings;
+    }
+
     public FreeTool() {
     }
 

@@ -64,6 +64,18 @@ public class Meeting {
         this.isReserved = isReserved;
     }
 
+    public Meeting(long id, MeetingType type, int startHour, int numberOfPersons, boolean isReserved, Room room, User user, Set<FreeTool> freeTools) {
+        this.id = id;
+        this.type = type;
+        this.startHour = startHour;
+        this.endHour = startHour + 1;
+        this.numberOfPersons = numberOfPersons;
+        this.isReserved = isReserved;
+        this.room = room;
+        this.user = user;
+        this.freeTools = freeTools;
+    }
+
     public Meeting() {
     }
 

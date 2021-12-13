@@ -1,8 +1,8 @@
 package com.meetingplanner.controller;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,10 +27,14 @@ public class RoomToolController {
     @GetMapping(value="/EquipementsSalle")
     public ResponseEntity<Set<RoomToolDto>>listeEquipementsSalle() {
         try {
-            List<RoomTool> _roomTools = roomToolService.getRoomTools();
-            Set<RoomTool> _roomTools_ = new HashSet<>(_roomTools);
-            Set<RoomToolDto> roomToolDtos = new HashSet<>();
-            _roomTools_.forEach(x -> roomToolDtos.add(RoomToolMapper.RoomToolEntityDtoMapper(x)));
+            Set<RoomTool> roomTools = roomToolService.getRoomTools()
+                    .stream()
+                    .map(roomTool -> new RoomTool(roomTool.getRoomToolId(), roomTool.getType(), roomTool.getRoom()))
+                    .collect(Collectors.toSet());
+            Set<RoomToolDto> roomToolDtos = roomTools
+                    .stream()
+                    .map(roomTool -> RoomToolMapper.RoomToolEntityDtoMapper(roomTool))
+                    .collect(Collectors.toSet());
             return new ResponseEntity<>(roomToolDtos, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,8 +45,8 @@ public class RoomToolController {
     @GetMapping(value="/EquipementSalle", params="id")
     public ResponseEntity<RoomToolDto>EquipementSalleById(@RequestParam Long id) {
         try {
-            RoomTool _roomTool = roomToolService.getRoomToolById(id).orElseThrow();
-            return new ResponseEntity<>(RoomToolMapper.RoomToolEntityDtoMapper(_roomTool), HttpStatus.OK);
+            RoomTool roomTool = roomToolService.getRoomToolById(id).orElseThrow();
+            return new ResponseEntity<>(RoomToolMapper.RoomToolEntityDtoMapper(roomTool), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,10 +56,14 @@ public class RoomToolController {
     @GetMapping(value="/EquipementsSalle", params="ids")
     public ResponseEntity<Set<RoomToolDto>>listeEquipementsSalleByIds(@RequestParam List<Long> ids) {
         try {
-            List<RoomTool> _roomToolsByIds = roomToolService.getRoomToolsByIds(ids);
-            Set<RoomTool> _roomToolsByIds_ = new HashSet<>(_roomToolsByIds);
-            Set<RoomToolDto> roomToolsByIdsDtos = new HashSet<>();
-            _roomToolsByIds_.forEach(x -> roomToolsByIdsDtos.add(RoomToolMapper.RoomToolEntityDtoMapper(x)));
+            Set<RoomTool> roomToolsByIds = roomToolService.getRoomToolsByIds(ids)
+                    .stream()
+                    .map(roomTool -> new RoomTool(roomTool.getRoomToolId(), roomTool.getType(), roomTool.getRoom()))
+                    .collect(Collectors.toSet());
+            Set<RoomToolDto> roomToolsByIdsDtos = roomToolsByIds
+                    .stream()
+                    .map(roomTool -> RoomToolMapper.RoomToolEntityDtoMapper(roomTool))
+                    .collect(Collectors.toSet());
             return new ResponseEntity<>(roomToolsByIdsDtos, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

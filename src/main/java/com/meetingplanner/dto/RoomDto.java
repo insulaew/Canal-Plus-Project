@@ -17,10 +17,12 @@ public class RoomDto {
 
     private Set<Long> meetingsIds;
 
-    public RoomDto(String id, int capacity, int capacity70) {
+    public RoomDto(String id, int capacity, int capacity70, Set<RoomToolDto> roomToolDtos, Set<Long> meetingsIds) {
         this.id = id;
         this.capacity = capacity;
         this.capacity70 = capacity70;
+        this.roomToolDtos = roomToolDtos;
+        this.meetingsIds = meetingsIds;
     }
 
     public RoomDto() {

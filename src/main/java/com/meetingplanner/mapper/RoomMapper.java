@@ -2,47 +2,42 @@ package com.meetingplanner.mapper;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.meetingplanner.dto.RoomDto;
 import com.meetingplanner.dto.RoomToolDto;
-import com.meetingplanner.model.Meeting;
 import com.meetingplanner.model.Room;
-import com.meetingplanner.model.RoomTool;
 
 /*Classe de traitement Entité/DTO Room*/
 public class RoomMapper {
 
     /*Permet de convertir une entité Room en DTO Room*/
     public static RoomDto RoomEntityDtoMapper (Room room) {
-        RoomDto roomDto = new RoomDto(
+        Set<RoomToolDto> roomToolDtos = new HashSet<RoomToolDto>();
+        Set<Long> meetingsIds = new HashSet<>();
+
+        if (room.getMeetings() != null) {
+            meetingsIds = room.getMeetings()
+                    .stream()
+                    .map(meeting -> meeting.getId())
+                    .collect(Collectors.toSet());
+        }
+
+        if (room.getRoomTools() != null) {
+            roomToolDtos = room.getRoomTools()
+                    .stream()
+                    .map(roomTool -> RoomToolMapper.RoomToolEntityDtoMapper(roomTool))
+                    .collect(Collectors.toSet());
+        }
+
+        return new RoomDto(
                 room.getId(),
                 room.getCapacity(),
-                room.getCapacity70()
+                room.getCapacity70(),
+                roomToolDtos,
+                meetingsIds
         );
 
-        Set<Long> meetingsIds = new HashSet<>();
-        Set<Meeting> meetings = room.getMeetings();
-
-        if (meetings != null) {
-
-            meetings.forEach(x -> meetingsIds.add(x.getId()));
-
-        }
-
-        roomDto.setMeetingsIds(meetingsIds);
-
-        Set<RoomToolDto> roomToolDtos = new HashSet<>();
-        Set<RoomTool> roomTools = room.getRoomTools();
-
-        if (roomTools != null) {
-
-            roomTools.forEach(x -> roomToolDtos.add(RoomToolMapper.RoomToolEntityDtoMapper(x)));
-
-        }
-
-        roomDto.setRoomToolDtos(roomToolDtos);
-
-        return roomDto;
     }
 
 }

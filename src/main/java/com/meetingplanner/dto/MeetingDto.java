@@ -3,6 +3,9 @@ package com.meetingplanner.dto;
 import com.meetingplanner.model.Meeting;
 import com.meetingplanner.model.MeetingType;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import java.util.Set;
 
 /*Classe du DTO de l'entité Meeting*/
@@ -10,29 +13,38 @@ public class MeetingDto {
 
     private long id;
 
+    @NotNull(message="Vous devez indiquer un type")
+    @NotEmpty(message="Le type ne peut pas être vide")
     private String type;
 
     private UserDto userDto;
 
+    @NotNull(message="Vous devez indiquer une heure de départ")
     private int startHour;
 
+    @NotNull(message="Vous devez indiquer une heure de fin")
     private int endHour;
 
+    @NotNull(message="Vous devez indiquer un nombre de personnes")
     private int numberOfPersons;
 
+    @NotNull(message="Vous devez indiquer un statut de réservation")
     private boolean isReserved;
 
     private RoomDto roomDto;
 
     private Set<FreeToolDto> freeToolDtos;
 
-    public MeetingDto(long id, String type, int startHour, int endHour, int numberOfPersons, boolean isReserved) {
+    public MeetingDto(long id, String type, UserDto userDto, int startHour, int endHour, int numberOfPersons, boolean isReserved, RoomDto roomDto, Set<FreeToolDto> freeToolDtos) {
         this.id = id;
         this.type = type;
+        this.userDto = userDto;
         this.startHour = startHour;
         this.endHour = endHour;
         this.numberOfPersons = numberOfPersons;
         this.isReserved = isReserved;
+        this.roomDto = roomDto;
+        this.freeToolDtos = freeToolDtos;
     }
 
     public MeetingDto() {

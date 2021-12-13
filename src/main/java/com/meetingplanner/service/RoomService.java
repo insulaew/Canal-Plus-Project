@@ -23,8 +23,4 @@ public class RoomService {
         return roomRepository.findRoomsCompatibleForMeeting(meetingNumberOfPersons, meetingStartHour);
     }
 
-    public List<Room> getRoomsCompatibleForMeetingEmergency(int meetingNumberOfPersons, int meetingStartHour) {
-        return roomRepository.findRoomsCompatibleForMeetingEmergency(meetingNumberOfPersons, meetingStartHour);
-    }
-
 }

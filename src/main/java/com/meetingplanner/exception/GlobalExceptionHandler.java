@@ -1,6 +1,7 @@
 package com.meetingplanner.exception;
 
 import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ SQLException.class })
     public ResponseEntity<Object> handleBadRequest(final SQLException ex, final WebRequest request) {
         System.out.println(ex.getErrorCode());
-        final String bodyOfResponse = "Le mail doit être unique";
+        final String bodyOfResponse = "La propriété doit être unique";
+
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    /*Permet de remonter des informations sur l'exception d'une utilisation d'un objet Null*/
+    @ExceptionHandler({ NullPointerException.class })
+    public ResponseEntity<Object> handleBadRequest(final NullPointerException ex, final WebRequest request) {
+        final String bodyOfResponse = "Il y a une utilisation d'un objet ou d'une propriété qui est nulle";
 
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }

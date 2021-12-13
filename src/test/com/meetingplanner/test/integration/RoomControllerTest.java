@@ -8,10 +8,11 @@ import com.meetingplanner.model.User;
 import com.meetingplanner.repository.FreeToolRepository;
 import com.meetingplanner.repository.MeetingRepository;
 import com.meetingplanner.repository.RoomRepository;
-
 import com.meetingplanner.repository.UserRepository;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +24,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -93,12 +94,14 @@ public class RoomControllerTest {
         freeToolsIds.add(3L);
         freeToolsIds.add(11L);
         freeToolsIds.add(7L);
-        List<FreeTool> _freeTools= this.freeToolRepository.findAllById(freeToolsIds);
-        Set<FreeTool> _freeTools_ = new HashSet<>(_freeTools);
+        Set<FreeTool> freeTools = this.freeToolRepository.findAllById(freeToolsIds)
+                .stream()
+                .map(freeTool -> new FreeTool(freeTool.getFreeToolId(), freeTool.getType(), freeTool.getMeetings()))
+                .collect(Collectors.toSet());
         Meeting meeting2 = this.meetingRepository.findById(2L).orElseThrow();
         /*On affect la salle, les outils libres et l'utilisateur au Meeting*/
         meeting2.setRoom(room2004);
-        meeting2.setFreeTools(_freeTools_);
+        meeting2.setFreeTools(freeTools);
         meeting2.setUser(nicolas);
         meeting2.setReserved(true);
 

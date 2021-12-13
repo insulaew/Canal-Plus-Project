@@ -34,6 +34,12 @@ public class RoomTool {
         this.type = type;
     }
 
+    public RoomTool(long roomToolId, ToolType type, Room room) {
+        this.roomToolId = roomToolId;
+        this.type = type;
+        this.room = room;
+    }
+
     public RoomTool() {
     }
 

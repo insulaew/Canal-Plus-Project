@@ -2,6 +2,7 @@ package com.meetingplanner.test.unit.integration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.meetingplanner.Application;
 import com.meetingplanner.dto.UserDto;
 import com.meetingplanner.repository.UserRepository;
@@ -15,13 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -51,11 +52,20 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(equalTo(3))));
     }
 
+    @Test
+    public void testUtilisateurByEmail() throws Exception {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        this.mockMvc.perform(get("/api/UtilisateurEmail")
+                .param("email", "media.svd@outlook.fr"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Nicolas")));
+
+    }
+
     /*Teste une requête Http Post User.*/
     @Test
     public void testPostUtilisateur() throws Exception{
-        UserDto laetitia = new UserDto(4L, "Laetitia", "Dautrey", "laetitia.dautrey@alten.com", "alten123");
-        laetitia.setMeetingsIds(new HashSet<Long>());
+        UserDto laetitia = new UserDto(4L, "Laetitia", "Dautrey", "laetitia.dautrey@alten.com", "alten123", new HashSet<Long>());
 
         ObjectMapper mapper = new ObjectMapper();
 

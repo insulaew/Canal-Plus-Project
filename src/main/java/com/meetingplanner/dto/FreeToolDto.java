@@ -14,9 +14,10 @@ public class FreeToolDto {
 
     private Set<Long> meetingsIds;
 
-    public FreeToolDto(long freeToolId, String type) {
+    public FreeToolDto(long freeToolId, String type, Set<Long> meetingsIds) {
         this.freeToolId = freeToolId;
         this.type = type;
+        this.meetingsIds = meetingsIds;
     }
 
     public FreeToolDto() { }

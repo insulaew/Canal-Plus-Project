@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.meetingplanner.Application;
 import com.meetingplanner.repository.RoomRepository;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,7 +31,7 @@ public class RoomRepositoryTest {
     * Il n'y a qu'une salle compatible.*/
     @Test
     public void testfindRoomsCompatibleForMeeting() {
-        assertEquals(this.roomRepository.findRoomsCompatibleForMeetingEmergency(16,8).size(), 1);
+        assertEquals(this.roomRepository.findRoomsCompatibleForMeeting(16,8).size(), 1);
     }
 
 }

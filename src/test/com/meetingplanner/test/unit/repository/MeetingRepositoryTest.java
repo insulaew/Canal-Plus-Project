@@ -20,8 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /*Classe de test du Repository Meeting*/
 @Transactional
@@ -44,20 +44,7 @@ public class MeetingRepositoryTest {
     /*On teste la fonctionnalité de sauvegarde d'une réunion en base de données*/
     @Test
     public void testSaveMeetingAndReservedNotReserved() {
-        User nicolas = this.userRepository.findById(1l).orElseThrow();
-        Room room2004 = this.roomRepository.findByRoomCode("E2004").orElseThrow();
-        /*La réunion 2 est de type VC et nécessite 1 webcam, 1 pieuvre et 1 écran.*/
-        Set<Long> freeToolsIds = new HashSet<>();
-        freeToolsIds.add(3L);
-        freeToolsIds.add(11L);
-        freeToolsIds.add(7L);
-        List<FreeTool> _freeTools= this.freeToolRepository.findAllById(freeToolsIds);
-        Set<FreeTool> freeToolsIds_ = new HashSet<>(_freeTools);
-        Meeting meeting2 = this.meetingRepository.findById(2L).orElseThrow();
-        meeting2.setRoom(room2004);
-        meeting2.setFreeTools(freeToolsIds_);
-        meeting2.setUser(nicolas);
-        meeting2.setReserved(true);
+        Meeting meeting2 = this.createMeetingForTest();
         this.meetingRepository.save(meeting2);
         Meeting savedMeeting2 = this.meetingRepository.findById(2L).orElseThrow();
         /*On vérifie que la réunion est bien réservée, qu'on lui a affecté l'utilisateur Nicolas Sivignon
@@ -68,6 +55,28 @@ public class MeetingRepositoryTest {
         assertEquals((int) savedMeeting2.getRoom().getCapacity70(), 6);
         assertEquals(this.meetingRepository.findReservedMeetings().size(), 1);
         assertEquals(this.meetingRepository.findNotReservedMeetings().size(), 19);
+    }
+
+    /*Méthode permettant de renvoyer un meeting personnalisé pour les tests.*/
+    public Meeting createMeetingForTest() {
+        User nicolas = this.userRepository.findById(1l).orElseThrow();
+        Room room2004 = this.roomRepository.findByRoomCode("E2004").orElseThrow();
+        /*La réunion 2 est de type VC et nécessite 1 webcam, 1 pieuvre et 1 écran.*/
+        Set<Long> freeToolsIds = new HashSet<>();
+        freeToolsIds.add(3L);
+        freeToolsIds.add(11L);
+        freeToolsIds.add(7L);
+        Set<FreeTool> freeTools = this.freeToolRepository.findAllById(freeToolsIds)
+                .stream()
+                .map(freeTool -> new FreeTool(freeTool.getFreeToolId(), freeTool.getType(), freeTool.getMeetings()))
+                .collect(Collectors.toSet());
+        Meeting meeting2 = this.meetingRepository.findById(2L).orElseThrow();
+        meeting2.setRoom(room2004);
+        meeting2.setFreeTools(freeTools);
+        meeting2.setUser(nicolas);
+        meeting2.setReserved(true);
+
+        return meeting2;
     }
 
 }

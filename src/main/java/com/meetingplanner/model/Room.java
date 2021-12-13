@@ -2,11 +2,7 @@ package com.meetingplanner.model;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /*Classe de l'entité Room*/
 @Entity
@@ -26,13 +22,21 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<RoomTool> roomTools;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Set<Meeting> meetings;
 
     public Room(String id, int capacity, int capacity70) {
         this.id = id;
         this.capacity = capacity;
         this.capacity70 = capacity70;
+    }
+
+    public Room(String id, int capacity, int capacity70, Set<RoomTool> roomTools, Set<Meeting> meetings) {
+        this.id = id;
+        this.capacity = capacity;
+        this.capacity70 = capacity70;
+        this.roomTools = roomTools;
+        this.meetings = meetings;
     }
 
     public Room() {

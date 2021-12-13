@@ -1,6 +1,7 @@
 package com.meetingplanner.test.unit.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.meetingplanner.Application;
 import com.meetingplanner.dto.MeetingDto;
 import com.meetingplanner.mapper.MeetingMapper;
@@ -28,8 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -121,7 +122,7 @@ public class MeetingControllerTest {
                 .content(mapper.writeValueAsString(meeting3Dto)))
                 .andExpect(status().isCreated());
 
-        MeetingDto updatedMeeting2Dto = new MeetingDto(meeting3Dto.getId(), meeting3Dto.getType(), meeting3Dto.getStartHour(), meeting3Dto.getEndHour(), meeting3Dto.getNumberOfPersons(), false);
+        MeetingDto updatedMeeting2Dto = new MeetingDto(meeting3Dto.getId(), meeting3Dto.getType(), null, meeting3Dto.getStartHour(), meeting3Dto.getEndHour(), meeting3Dto.getNumberOfPersons(), false, null, new HashSet<>());
         /*On poste le JSON d'un updated DTO Meeting*/
         this.mockMvc.perform(put("/api/Reunion")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -148,12 +149,14 @@ public class MeetingControllerTest {
         freeToolsIds.add(1L);
         freeToolsIds.add(15L);
         freeToolsIds.add(9L);
-        List<FreeTool> _freeTools= this.freeToolRepository.findAllById(freeToolsIds);
-        Set<FreeTool> _freeTools_ = new HashSet<>(_freeTools);
+        Set<FreeTool> freeTools = this.freeToolRepository.findAllById(freeToolsIds)
+                .stream()
+                .map(freeTool -> new FreeTool(freeTool.getFreeToolId(), freeTool.getType(), freeTool.getMeetings()))
+                .collect(Collectors.toSet());
         Meeting meeting3 = this.meetingRepository.findById(3L).orElseThrow();
         /*On affect la salle, les outils libres et l'utilisateur au Meeting*/
         meeting3.setRoom(room2003);
-        meeting3.setFreeTools(_freeTools_);
+        meeting3.setFreeTools(freeTools);
         meeting3.setUser(daniele);
         meeting3.setReserved(true);
 

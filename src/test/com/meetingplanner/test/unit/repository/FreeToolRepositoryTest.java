@@ -19,8 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /*Classe de test du Repository FreeTool*/
 @Transactional
@@ -56,19 +56,7 @@ public class FreeToolRepositoryTest {
      */
     @Test
     public void testFindFreeToolsByTypeCompatibleForMeeting() {
-        User nicolas = this.userRepository.findById(1l).orElseThrow();
-        Room room2004 = this.roomRepository.findByRoomCode("E2004").orElseThrow();
-        Set<Long> freeToolsIds = new HashSet<>();
-        freeToolsIds.add(3L);
-        freeToolsIds.add(11L);
-        freeToolsIds.add(7L);
-        List<FreeTool> _freeTools= this.freeToolRepository.findAllById(freeToolsIds);
-        Set<FreeTool> freeToolsIds_ = new HashSet<>(_freeTools);
-        Meeting meeting2 = this.meetingRepository.findById(2L).orElseThrow();
-        meeting2.setRoom(room2004);
-        meeting2.setFreeTools(freeToolsIds_);
-        meeting2.setUser(nicolas);
-        meeting2.setReserved(true);
+        Meeting meeting2 = this.createMeetingForTest();
         this.meetingRepository.save(meeting2);
         assertEquals(this.freeToolRepository.findFreeToolsByTypeCompatibleForMeeting("Pieuvre", 9).size(), 3);
         assertEquals(this.freeToolRepository.findFreeToolsByTypeCompatibleForMeeting("Ecran", 9).size(), 4);
@@ -86,6 +74,27 @@ public class FreeToolRepositoryTest {
         freeTool.setType(ToolType.Ecran);
         this.freeToolRepository.save(freeTool);
         assertNotEquals(ToolType.Pieuvre, this.freeToolRepository.getById(1L).getType());
+    }
+
+    /*Méthode permettant de renvoyer un meeting personnalisé pour les tests.*/
+    public Meeting createMeetingForTest() {
+        User nicolas = this.userRepository.findById(1l).orElseThrow();
+        Room room2004 = this.roomRepository.findByRoomCode("E2004").orElseThrow();
+        Set<Long> freeToolsIds = new HashSet<>();
+        freeToolsIds.add(3L);
+        freeToolsIds.add(11L);
+        freeToolsIds.add(7L);
+        Set<FreeTool> freeTools = this.freeToolRepository.findAllById(freeToolsIds)
+                .stream()
+                .map(freeTool -> new FreeTool(freeTool.getFreeToolId(), freeTool.getType(), freeTool.getMeetings()))
+                .collect(Collectors.toSet());
+        Meeting meeting2 = this.meetingRepository.findById(2L).orElseThrow();
+        meeting2.setRoom(room2004);
+        meeting2.setFreeTools(freeTools);
+        meeting2.setUser(nicolas);
+        meeting2.setReserved(true);
+
+        return meeting2;
     }
 
 }

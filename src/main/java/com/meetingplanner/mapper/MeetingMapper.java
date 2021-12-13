@@ -2,6 +2,7 @@ package com.meetingplanner.mapper;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.meetingplanner.dto.FreeToolDto;
 import com.meetingplanner.dto.MeetingDto;
@@ -18,41 +19,37 @@ public class MeetingMapper {
     /*Permet de convertir une entité Meeting en DTO Meeting*/
     public static MeetingDto MeetingEntityDtoMapper (Meeting meeting) {
 
+        Set<FreeTool> freeTools = meeting.getFreeTools();
+        Set<FreeToolDto> freeToolDtos = new HashSet<>();
+        if (freeTools != null) {
+            freeToolDtos = freeTools
+                    .stream()
+                    .map(freeTool -> FreeToolMapper.FreeToolEntityDtoMapper(freeTool))
+                    .collect(Collectors.toSet());
+        }
+
         MeetingDto meetingDto = new MeetingDto(
                 meeting.getId(),
                 meeting.getType().toString(),
+                null,
                 meeting.getStartHour(),
                 meeting.getEndHour(),
                 meeting.getNumberOfPersons(),
-                meeting.isReserved()
+                meeting.isReserved(),
+                null,
+                freeToolDtos
         );
 
-        Set<FreeToolDto> freeToolDtos = new HashSet<>();
-        Set<FreeTool> freeTools = meeting.getFreeTools();
-
-        if (freeTools != null) {
-
-            freeTools.forEach(x -> freeToolDtos.add(FreeToolMapper.FreeToolEntityDtoMapper(x)));
-
-        }
-
-        meetingDto.setFreeToolDtos(freeToolDtos);
-
         User user = meeting.getUser();
-
         if (user != null) {
-
             UserDto userDto = UserMapper.UserEntityDtoMapper(user);
             meetingDto.setUserDto(userDto);
-
         }
 
         Room room = meeting.getRoom();
         if (room != null) {
-
             RoomDto roomDto = RoomMapper.RoomEntityDtoMapper(room);
             meetingDto.setRoomDto(roomDto);
-
         }
 
         return meetingDto;

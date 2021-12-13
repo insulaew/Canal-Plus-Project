@@ -24,12 +24,12 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    public void getUserById() {
+    public void testGetUserById() {
         assertEquals(this.userRepository.findById(1L).orElseThrow().getFirstName(), "Nicolas");
     }
 
     @Test
-    public void getUserByEmail() {
+    public void testGetUserByEmail() {
         assertEquals(this.userRepository.findUserByEmail("media.svd@outlook.fr").orElseThrow().getFirstName(), "Nicolas");
     }
 

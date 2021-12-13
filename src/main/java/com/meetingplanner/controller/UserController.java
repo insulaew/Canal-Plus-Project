@@ -1,13 +1,10 @@
 package com.meetingplanner.controller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.meetingplanner.model.Meeting;
 import com.meetingplanner.service.MeetingService;
 import com.meetingplanner.dto.UserDto;
 import com.meetingplanner.mapper.UserMapper;
@@ -36,11 +33,26 @@ public class UserController {
     @GetMapping(value="/Utilisateurs")
     public ResponseEntity<Set<UserDto>> listeUtilisateurs() {
         try {
-            List<User> _users = this.userService.getUsers();
-            Set<User> _users_ = new HashSet<>(_users);
-            Set<UserDto> userDtos = new HashSet<>();
-            _users_.forEach(x -> userDtos.add(UserMapper.UserEntityDtoMapper(x)));
+            Set<User> users = this.userService.getUsers()
+                    .stream()
+                    .map(user -> new User(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getMeetings()))
+                    .collect(Collectors.toSet());
+            Set<UserDto> userDtos = users
+                    .stream()
+                    .map(user -> UserMapper.UserEntityDtoMapper(user))
+                    .collect(Collectors.toSet());
             return new ResponseEntity<>(userDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*Permet de récupérer un utilisateur grâce à son email en base de données*/
+    @GetMapping(value="/UtilisateurEmail")
+    public ResponseEntity<UserDto> UtilisateurByEmail(@RequestParam String email) {
+        try {
+            User user = this.userService.getUserByEmail(email);
+            return new ResponseEntity<>(UserMapper.UserEntityDtoMapper(user), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -50,15 +62,9 @@ public class UserController {
     @Transactional
     @PostMapping(value="/Utilisateur")
     public ResponseEntity<UserDto> postUtilisateur(@Valid @RequestBody UserDto userDto) {
-        Set<Long> _meetingsIds = userDto.getMeetingsIds();
-        List<Long> _meetingsIds_ = new ArrayList<>(_meetingsIds);
-        List<Meeting> _meetings = this.meetingService.getMeetingsByIds(_meetingsIds_);
-        Set<Meeting> _meetings_ = new HashSet<>(_meetings);
-        User userSaved = userDto.toUser();
-        userSaved.setMeetings(_meetings_);
         try {
-            UserDto userDtoFinal = UserMapper.UserEntityDtoMapper(this.userService.saveUser(userSaved));
-            return new ResponseEntity<>(userDtoFinal, HttpStatus.CREATED);
+            User user = this.userService.saveUser(userDto.toUser());
+            return new ResponseEntity<>(UserMapper.UserEntityDtoMapper(user), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

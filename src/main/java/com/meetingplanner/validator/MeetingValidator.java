@@ -51,5 +51,7 @@ public class MeetingValidator {
         } else if (meeting.getRoom() != null || meeting.getUser() != null || meeting.getFreeTools() != null) {
             throw new Exception("Une réunion qui n'est pas réservée n'a ni utilisateur, ni outils libres ni salle affectés !");
         }
+
     }
+
 }
