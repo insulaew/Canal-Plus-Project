@@ -14,6 +14,7 @@ import com.meetingplanner.repository.MeetingRepository;
 import com.meetingplanner.repository.RoomRepository;
 import com.meetingplanner.repository.UserRepository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,8 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -36,8 +39,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 /*Classe de test du Controller de l'entité Meeting*/
 @Transactional
@@ -45,6 +50,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest(classes= {Application.class})
 public class MeetingControllerTest {
+
+    @Autowired
+    private WebApplicationContext context;
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,6 +71,14 @@ public class MeetingControllerTest {
 
     @Autowired
     private MeetingRepository meetingRepository;
+
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+    }
 
     /*Il y a 20 réunions au total en base de données.*/
     @Test
@@ -97,6 +113,7 @@ public class MeetingControllerTest {
     }
 
     @Test
+    @WithMockUser("media.svd@outlook.fr")
     public void testPostReunion() throws Exception {
 
         /*On crée une réservation pour la réunion 3 à l'aide de la fonction createMeetingForTest*/
@@ -112,6 +129,7 @@ public class MeetingControllerTest {
 
     /*Teste la fonctionnalité update Meeting utilisée côté front pour annuler une réservation*/
     @Test
+    @WithMockUser("media.svd@outlook.fr")
     public void testUpdateReunion() throws Exception {
         Meeting meeting3 = this.createMeetingForTest();
         ObjectMapper mapper = new ObjectMapper();

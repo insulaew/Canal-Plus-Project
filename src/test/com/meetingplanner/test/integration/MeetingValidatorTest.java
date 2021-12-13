@@ -3,7 +3,6 @@ package com.meetingplanner.test.unit.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.meetingplanner.Application;
-import com.meetingplanner.dto.FreeToolDto;
 import com.meetingplanner.dto.MeetingDto;
 import com.meetingplanner.model.FreeTool;
 import com.meetingplanner.model.Meeting;
@@ -19,8 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -103,9 +102,10 @@ public class MeetingValidatorTest {
     public void testIsValid1() throws Exception {
         MeetingDto meetingDto = mapper.readValue(json1, MeetingDto.class);
         Meeting meeting = meetingDto.toMeeting();
-        Set<FreeToolDto> freeToolsDtos = meetingDto.getFreeToolDtos();
-        Set<FreeTool> freeTools = new HashSet<>();
-        freeToolsDtos.forEach(x -> freeTools.add(x.toFreeTool()));
+        Set<FreeTool> freeTools = meetingDto.getFreeToolDtos()
+                .stream()
+                .map(freeToolDto -> freeToolDto.toFreeTool())
+                .collect(Collectors.toSet());
         meeting.setFreeTools(freeTools);
         Exception exception = assertThrows(Exception.class,
                 () -> {
